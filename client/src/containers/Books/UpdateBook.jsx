@@ -9,17 +9,11 @@ const UpdateBook = () => {
 
   const { id } = useParams();
 
-  useEffect(() => {
-    dispatch(getBookStart({ id }));
-  }, [dispatch, id]);
+  useEffect(() => dispatch(getBookStart({ id })), [dispatch]);
 
-  const { title, description, price } = book;
+  const [inputs, setInputs] = useState({});
 
-  const [inputs, setInputs] = useState({
-    title,
-    description,
-    price
-  });
+  useEffect(() => setInputs({ ...book }), [book]);
 
   const handleInputChange = e =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -29,8 +23,8 @@ const UpdateBook = () => {
     dispatch(updateBookStart({ id, body: inputs }));
   };
 
-  if (error) return <p>{error}</p>;
   if (loading) return <p>loading</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
@@ -38,7 +32,7 @@ const UpdateBook = () => {
         <input
           type='text'
           name='title'
-          onChange={e => handleInputChange(e)}
+          onChange={handleInputChange}
           value={inputs.title}
           placeholder='title'
           required
@@ -46,7 +40,7 @@ const UpdateBook = () => {
 
         <textarea
           name='description'
-          onChange={e => handleInputChange(e)}
+          onChange={handleInputChange}
           value={inputs.description}
           placeholder='description'
           required
@@ -55,7 +49,7 @@ const UpdateBook = () => {
         <input
           type='number'
           name='price'
-          onChange={e => handleInputChange(e)}
+          onChange={handleInputChange}
           value={inputs.price}
           placeholder='price'
           required

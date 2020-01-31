@@ -1,3 +1,5 @@
+import 'whatwg-fetch';
+
 const parseJSON = response => {
   if (response.status === 204 || response.status === 205) {
     return null;
@@ -17,7 +19,7 @@ const checkStatus = response => {
     statusText: response.statusText
   };
 
-  return new Promise((_, reject) => {
+  return new Promise((resolve, reject) => {
     response
       .json()
       .then(err => {
@@ -36,7 +38,7 @@ export const defaultHeaders = () => {
     Authorization: `Bearer ${localStorage.token}`
   };
 
-  if (!localStorage.token) delete headers.Authorization;
+  if (!localStorage.token) delete headers.token_auth;
 
   return headers;
 };
@@ -51,6 +53,32 @@ export default (urlRequest, method = 'GET', body) => {
   if (method === 'GET') {
     delete options.body;
   }
+
+  return fetch(urlRequest, options)
+    .then(checkStatus)
+    .then(parseJSON);
+};
+
+export const requestData = (urlRequest, method = 'POST', body) => {
+  let formData = new FormData();
+
+  for (let name in body) {
+    if (
+      Array.isArray(body[name]) &&
+      name !== 'source' &&
+      name !== 'prevCompanies'
+    ) {
+      formData.append(name, JSON.stringify(body[name]));
+    } else {
+      formData.append(name, body[name]);
+    }
+  }
+
+  const options = {
+    method,
+    headers: { Authorization: `Bearer ${localStorage.token}` },
+    body: formData
+  };
 
   return fetch(urlRequest, options)
     .then(checkStatus)

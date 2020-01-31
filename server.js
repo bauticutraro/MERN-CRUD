@@ -25,6 +25,8 @@ const limiter = rateLimit({
   max: 1000
 });
 
+app.use(express.static(__dirname));
+
 app.use(limiter);
 
 app.use(require('hpp')());

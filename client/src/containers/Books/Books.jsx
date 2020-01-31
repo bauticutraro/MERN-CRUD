@@ -12,12 +12,10 @@ const Books = () => {
     dispatch(getBooksStart());
   }, [dispatch]);
 
-  const handleDeleteBook = id => {
-    dispatch(deleteBookStart(id));
-  };
+  const handleDeleteBook = id => dispatch(deleteBookStart(id));
 
-  if (error) return <p>{error}</p>;
   if (loading) return <p>loading</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
@@ -40,4 +38,4 @@ const Books = () => {
   );
 };
 
-export default React.memo(Books);
+export default Books;

@@ -4,16 +4,19 @@ import { addBookStart } from './booksActions';
 import { Link } from 'react-router-dom';
 
 const AddBook = () => {
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState({}),
+    [image, setImage] = useState({});
 
   const dispatch = useDispatch();
 
   const handleInputChange = e =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
+  const handleFileChange = e => setImage(e.target.files[0]);
+
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(addBookStart(inputs));
+    dispatch(addBookStart({ ...inputs, image }));
   };
 
   return (
@@ -22,14 +25,14 @@ const AddBook = () => {
         <input
           type='text'
           name='title'
-          onChange={e => handleInputChange(e)}
+          onChange={handleInputChange}
           placeholder='title'
           required
         />
 
         <textarea
           name='description'
-          onChange={e => handleInputChange(e)}
+          onChange={handleInputChange}
           placeholder='description'
           required
         ></textarea>
@@ -37,10 +40,12 @@ const AddBook = () => {
         <input
           type='number'
           name='price'
-          onChange={e => handleInputChange(e)}
+          onChange={handleInputChange}
           placeholder='price'
           required
         />
+
+        <input type='file' name='image' onChange={handleFileChange} />
 
         <button type='submit'>add</button>
       </form>

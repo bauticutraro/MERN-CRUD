@@ -21,6 +21,9 @@ const BookSchema = new Schema({
   price: {
     type: Number,
     require: true
+  },
+  file: {
+    type: String
   }
 });
 

@@ -1,4 +1,5 @@
 const BookModel = require('./bookModel');
+const aws = require('../../utils/aws');
 
 class BookController {
   async getBooks(_, res) {
@@ -11,13 +12,13 @@ class BookController {
   }
 
   async getBook(req, res) {
+    const { id } = req.params;
     try {
-      const book = await BookModel.findById(req.params.id);
+      const book = await BookModel.findById(id);
 
       if (!book)
         return res.status(404).json({
-          success: false,
-          data: `Book with id ${req.params.id} not found`
+          error: `Book with id ${id} not found`
         });
 
       return res.status(200).json({ book });
@@ -28,8 +29,17 @@ class BookController {
 
   async createBook(req, res) {
     try {
-      const book = await BookModel.create(req.body);
-      return res.status(200).json({ book });
+      const upload = await aws('books', req.file);
+      let file;
+
+      if (upload.success) file = upload.uri;
+
+      const book = await BookModel.create({
+        ...req.body,
+        file
+      });
+
+      return res.status(200).json({ book, file });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -43,8 +53,7 @@ class BookController {
 
       if (!book)
         return res.status(404).json({
-          success: false,
-          data: `Book with id ${id} not found`
+          error: `Book with id ${id} not found`
         });
 
       book.title = title || book.title;
@@ -59,13 +68,14 @@ class BookController {
   }
 
   async deleteBook(req, res) {
+    const { id } = req.params;
     try {
-      const book = await BookModel.findById(req.params.id);
+      const book = await BookModel.findById(id);
 
       if (!book)
         return res.status(404).json({
           success: false,
-          data: `Book with id ${req.params.id} not found`
+          data: `Book with id ${id} not found`
         });
 
       await book.remove();

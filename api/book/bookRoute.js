@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const upload = require('../../utils/upload');
 // class
 const BookController = require('./bookController');
 const bookController = new BookController();
@@ -13,7 +13,7 @@ router
   // @desc    Create book
   // @route   POST /api/v1/books
   // @access  Public
-  .post(bookController.createBook);
+  .post(upload.single('image'), bookController.createBook);
 
 router
   .route('/:id')

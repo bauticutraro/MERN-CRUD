@@ -1,4 +1,5 @@
 node_modules/
+uploads/
 .env.production
 .env.development
 .yarn-error.log
