@@ -11,7 +11,7 @@ const App = () => {
     <Suspense fallback={<p>loading...</p>}>
       <Switch>
         <Route path='/' component={Books} exact />
-        <Route path='/addbook' component={AddBook} exact />
+        <Route path='/add' component={AddBook} exact />
         <Route path='/:id' component={Book} exact />
         <Route path='/update/:id' component={UpdateBook} exact />
       </Switch>

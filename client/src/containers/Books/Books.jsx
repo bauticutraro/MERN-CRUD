@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+// redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getBooksStart, deleteBookStart } from './booksActions';
-import { Link } from 'react-router-dom';
+// styles
+import { Button } from '@material-ui/core';
 
-const Books = () => {
+const Books = ({ history: { push } }) => {
   const dispatch = useDispatch();
 
   const { list, loading, error } = useSelector(({ books }) => books);
@@ -13,6 +16,7 @@ const Books = () => {
   }, [dispatch]);
 
   const handleDeleteBook = id => dispatch(deleteBookStart(id));
+  const handleChangeRoute = route => push(route);
 
   if (loading) return <p>loading</p>;
   if (error) return <p>{error}</p>;
@@ -33,7 +37,13 @@ const Books = () => {
           </p>
         </div>
       ))}
-      <Link to='/addbook'>+ add book</Link>
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={() => handleChangeRoute('/add')}
+      >
+        Add Book
+      </Button>
     </div>
   );
 };
