@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getBooksStart, deleteBookStart } from './booksActions';
 // styles
 import { Button } from '@material-ui/core';
+import Navbar from '../../components/Navbar/Navbar';
+import SideBar from '../../components/Sidebar/Sidebar';
 
 const Books = ({ history: { push } }) => {
   const dispatch = useDispatch();
