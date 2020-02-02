@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBooksStart, deleteBookStart } from './booksActions';
 // styles
-import { Button } from '@material-ui/core';
+import { Button, Grid, CircularProgress } from '@material-ui/core';
 import Navbar from '../../components/Navbar/Navbar';
 import SideBar from '../../components/Sidebar/Sidebar';
+import BookItem from '../../components/BookItem/BookItem';
 
 const Books = ({ history: { push } }) => {
   const dispatch = useDispatch();
@@ -17,36 +18,21 @@ const Books = ({ history: { push } }) => {
     dispatch(getBooksStart());
   }, [dispatch]);
 
-  const handleDeleteBook = id => dispatch(deleteBookStart(id));
   const handleChangeRoute = route => push(route);
 
-  if (loading) return <p>loading</p>;
+  if (loading) return <CircularProgress />;
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      {list.map((book, i) => (
-        <div key={i} style={{ display: 'flex', padding: '1rem' }}>
-          <Link to={`/${book._id}`}>{book.title}</Link>
-          <Link to={`/update/${book._id}`} style={{ marginLeft: 10 }}>
-            EDITAR
-          </Link>
-          <p
-            onClick={() => handleDeleteBook(book._id)}
-            style={{ margin: 0, marginLeft: 10 }}
-          >
-            X
-          </p>
-        </div>
-      ))}
-      <Button
-        variant='contained'
-        color='primary'
-        onClick={() => handleChangeRoute('/add')}
-      >
-        Add Book
-      </Button>
-    </div>
+    <Grid items xs={12}>
+      <Grid container justify='center' spacing={6}>
+        {list.map((book, i) => (
+          <Grid item>
+            <BookItem key={book._id} {...book} />
+          </Grid>
+        ))}
+      </Grid>
+    </Grid>
   );
 };
 
