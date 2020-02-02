@@ -1,83 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { useParams, Link } from 'react-router-dom';
+// redux
+import { useDispatch, useSelector } from 'react-redux';
 import { getBookStart, updateBookStart } from './booksActions';
 
-import {
-  Container,
-  FormControl,
-  TextField,
-  Button,
-  FormLabel
-} from '@material-ui/core';
-
 const EditBook = () => {
+  const { register, handleSubmit, setValue, errors } = useForm();
+
   const dispatch = useDispatch();
   const { book, loading, error } = useSelector(({ books }) => books);
 
   const { id } = useParams();
 
-  useEffect(() => dispatch(getBookStart({ id })), [dispatch]);
+  const onSubmit = body => dispatch(updateBookStart({ id, body }));
 
-  const [inputs, setInputs] = useState({});
+  useEffect(() => {
+    dispatch(getBookStart({ id }));
+  }, [dispatch]);
 
-  useEffect(() => setInputs({ ...book }), [book]);
-
-  const handleInputChange = e =>
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    dispatch(updateBookStart({ id, body: inputs }));
-  };
+  useEffect(() => {
+    setValue('title', book.title);
+    setValue('description', book.description);
+    setValue('price', book.price);
+  }, [book]);
 
   if (loading) return <p>loading</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <Container margin='normal'>
-      <FormControl onSubmit={handleSubmit} fullWidth>
-        <FormLabel>Title</FormLabel>
-        <TextField
-          type='text'
-          name='title'
-          margin='normal'
-          onChange={handleInputChange}
-          value={inputs.title}
-          placeholder='title'
-          required
-          fullWidth
-        />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input
+        name='title'
+        type='text'
+        margin='normal'
+        placeholder='title'
+        ref={register({ required: true })}
+      />
 
-        <FormLabel>Description</FormLabel>
+      {errors.title && <p>error!</p>}
 
-        <TextField
-          name='description'
-          margin='normal'
-          onChange={handleInputChange}
-          value={inputs.description}
-          placeholder='description'
-          required
-        />
+      <input
+        name='description'
+        margin='normal'
+        placeholder='description'
+        ref={register({ required: true, minLength: 20 })}
+      />
 
-        <FormLabel>Price</FormLabel>
+      {errors.description && <p>Description is to short!</p>}
 
-        <TextField
-          type='number'
-          name='price'
-          margin='normal'
-          onChange={handleInputChange}
-          value={inputs.price}
-          placeholder='price'
-          required
-        />
+      <input
+        type='number'
+        name='price'
+        margin='normal'
+        placeholder='price'
+        ref={register({ required: true })}
+      />
+      {errors.description && <p>Description is to short!</p>}
 
-        <Button variant='contained' color='primary' type='submit'>
-          update
-        </Button>
-      </FormControl>
+      <input type='submit'>update</input>
       <Link to='/'>home</Link>
-    </Container>
+    </form>
   );
 };
 
