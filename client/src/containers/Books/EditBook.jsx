@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, Link } from 'react-router-dom';
+// components
+import Loader from '../../components/Loader/Loader';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getBookStart, updateBookStart } from './booksActions';
@@ -25,7 +27,7 @@ const EditBook = () => {
     setValue('price', book.price);
   }, [book]);
 
-  if (loading) return <p>loading</p>;
+  if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
   return (
@@ -33,7 +35,6 @@ const EditBook = () => {
       <input
         name='title'
         type='text'
-        margin='normal'
         placeholder='title'
         ref={register({ required: true })}
       />
@@ -42,7 +43,6 @@ const EditBook = () => {
 
       <input
         name='description'
-        margin='normal'
         placeholder='description'
         ref={register({ required: true, minLength: 20 })}
       />
@@ -52,14 +52,12 @@ const EditBook = () => {
       <input
         type='number'
         name='price'
-        margin='normal'
         placeholder='price'
         ref={register({ required: true })}
       />
-      {errors.description && <p>Description is to short!</p>}
+      {errors.price && <p>Price is required</p>}
 
-      <input type='submit'>update</input>
-      <Link to='/'>home</Link>
+      <input type='submit' value='Save' />
     </form>
   );
 };
