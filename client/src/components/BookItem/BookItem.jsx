@@ -66,7 +66,10 @@ function BookItem(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label='add to favorites'>
+        <IconButton
+          aria-label='Edit'
+          onClick={() => props.handleChangeRoute(`/edit/${props._id}`)}
+        >
           <Edit />
         </IconButton>
         <IconButton
