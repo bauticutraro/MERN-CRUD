@@ -9,7 +9,7 @@ import SideBar from '../../components/Sidebar/Sidebar';
 const Books = lazy(() => import('../Books/Books'));
 const Book = lazy(() => import('../Books/Book'));
 const AddBook = lazy(() => import('../Books/AddBook'));
-const UpdateBook = lazy(() => import('../Books/UpdateBook'));
+const EditBook = lazy(() => import('../Books/EditBook'));
 
 const App = () => {
   return (
@@ -22,7 +22,7 @@ const App = () => {
           <Route path='/' component={Books} exact />
           <Route path='/add' component={AddBook} exact />
           <Route path='/:id' component={Book} exact />
-          <Route path='/edit/:id' component={UpdateBook} exact />
+          <Route path='/edit/:id' component={EditBook} exact />
         </Switch>
       </Suspense>
     </>

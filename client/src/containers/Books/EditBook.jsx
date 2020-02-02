@@ -3,7 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { getBookStart, updateBookStart } from './booksActions';
 
-const UpdateBook = () => {
+import {
+  Container,
+  FormControl,
+  TextField,
+  Button,
+  FormLabel
+} from '@material-ui/core';
+
+const EditBook = () => {
   const dispatch = useDispatch();
   const { book, loading, error } = useSelector(({ books }) => books);
 
@@ -27,39 +35,50 @@ const UpdateBook = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
+    <Container margin='normal'>
+      <FormControl onSubmit={handleSubmit} fullWidth>
+        <FormLabel>Title</FormLabel>
+        <TextField
           type='text'
           name='title'
+          margin='normal'
           onChange={handleInputChange}
           value={inputs.title}
           placeholder='title'
           required
+          fullWidth
         />
 
-        <textarea
+        <FormLabel>Description</FormLabel>
+
+        <TextField
           name='description'
+          margin='normal'
           onChange={handleInputChange}
           value={inputs.description}
           placeholder='description'
           required
-        ></textarea>
+        />
 
-        <input
+        <FormLabel>Price</FormLabel>
+
+        <TextField
           type='number'
           name='price'
+          margin='normal'
           onChange={handleInputChange}
           value={inputs.price}
           placeholder='price'
           required
         />
 
-        <button type='submit'>update</button>
-      </form>
+        <Button variant='contained' color='primary' type='submit'>
+          update
+        </Button>
+      </FormControl>
       <Link to='/'>home</Link>
-    </div>
+    </Container>
   );
 };
 
-export default UpdateBook;
+export default EditBook;
