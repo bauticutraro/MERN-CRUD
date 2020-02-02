@@ -3,8 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 // styles
 import GlobalStyle from '../../global-styles';
 // components
-import Navbar from '../../components/Navbar/Navbar';
-// import SideBar from '../../components/Sidebar/Sidebar';
+import Nav from '../../components/Navbar/Nav';
 // containers
 const Books = lazy(() => import('../Books/Books'));
 const Book = lazy(() => import('../Books/Book'));
@@ -15,8 +14,7 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      <Navbar />
-      {/* <SideBar /> */}
+      <Nav />
       <Suspense fallback={<p>loading...</p>}>
         <Switch>
           <Route path='/' component={Books} exact />

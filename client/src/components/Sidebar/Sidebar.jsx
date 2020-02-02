@@ -1,9 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
-  Drawer,
   IconButton,
-  List,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -19,19 +17,29 @@ const routes = [
   { icon: 'add', link: '/add', label: 'Add book' }
 ];
 
-const SideBar = () => {
-  // const [open, setOpen] = true;
+const SideBar = ({ open, handleClose }) => {
+  const history = useHistory();
+
+  const handleChangeRoute = route => {
+    handleClose();
+    setTimeout(() => history.push(route), 10);
+  };
+
   return (
-    <SideBarNav variant='permanent' open={false}>
+    <SideBarNav variant='permanent' open={open}>
       <ToolbarIcon>
-        <IconButton>
+        <IconButton onClick={handleClose}>
           <Close style={{ color: '#fff' }} />
         </IconButton>
       </ToolbarIcon>
       <Divider />
       <ListWrapper>
         {routes.map(route => (
-          <ListItem key={route.label} component={Link} to={route.link} button>
+          <ListItem
+            key={route.label}
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleChangeRoute(route.link)}
+          >
             <ListItemIcon>
               <Icon style={{ color: '#fff' }}>{route.icon}</Icon>
             </ListItemIcon>

@@ -14,12 +14,13 @@ export const SideBarNav = styled(({ ...props }) => (
   bottom: 0;
   position: fixed;
   white-space: nowrap;
-  width: ${props => (props.open ? '260px' : '56px')};
+  z-index: 100000;
+  width: ${props => (props.open ? '260px' : '0')};
   ${props => mixins.transition('width', props.open)};
 
   & .paper {
     position: relative;
-    width: ${props => (props.open ? '260px' : '56px')};
+    width: ${props => (props.open ? '260px' : '0')};
     overflow-x: ${props => (!props.open ? 'hidden' : '')};
     ${props => mixins.transition('width', props.open)};
     background-color: #43425d;

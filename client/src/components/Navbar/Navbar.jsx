@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Navbar = () => {
+const Navbar = ({ handleOpen }) => {
   const classes = useStyles();
 
   return (
@@ -73,6 +73,7 @@ const Navbar = () => {
             className={classes.menuButton}
             color='inherit'
             aria-label='open drawer'
+            onClick={handleOpen}
           >
             <MenuIcon />
           </IconButton>
