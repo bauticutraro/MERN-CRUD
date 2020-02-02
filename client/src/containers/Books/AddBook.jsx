@@ -1,57 +1,50 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+// redux
 import { useDispatch } from 'react-redux';
 import { addBookStart } from './booksActions';
-import { Link } from 'react-router-dom';
 
 const AddBook = () => {
-  const [inputs, setInputs] = useState({}),
-    [image, setImage] = useState({});
+  const { register, handleSubmit, setValue, errors } = useForm({
+    defaultValues: { image: {} }
+  });
+  const [image, setImage] = useState({});
 
   const dispatch = useDispatch();
 
-  const handleInputChange = e =>
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
+  const onSubmit = data => dispatch(addBookStart({ ...data, image }));
 
-  const handleFileChange = e => setImage(e.target.files[0]);
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    dispatch(addBookStart({ ...inputs, image }));
-  };
+  const handleImage = ({ target }) => setImage(target.files[0]);
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          name='title'
-          onChange={handleInputChange}
-          placeholder='title'
-          required
-        />
+    <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
+      <input
+        type='text'
+        name='title'
+        placeholder='title'
+        ref={register({ required: true })}
+      />
+      {errors.title && <p>Title required!</p>}
 
-        <textarea
-          name='description'
-          onChange={handleInputChange}
-          placeholder='description'
-          required
-        ></textarea>
+      <input
+        name='description'
+        placeholder='description'
+        ref={register({ required: true /*minLength: 20 */ })}
+      />
+      {errors.description && <p>Description required</p>}
 
-        <input
-          type='number'
-          name='price'
-          onChange={handleInputChange}
-          placeholder='price'
-          required
-        />
+      <input
+        type='number'
+        name='price'
+        placeholder='price'
+        ref={register({ required: true })}
+      />
+      {errors.price && <p>Price required</p>}
+      <input type='file' name='image' onChange={handleImage} />
 
-        <input type='file' name='image' onChange={handleFileChange} />
-
-        <button type='submit'>add</button>
-      </form>
-
-      <Link to='/'>home</Link>
-    </div>
+      <button type='submit'>Add</button>
+    </form>
   );
 };
 
