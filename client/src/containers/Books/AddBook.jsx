@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 // redux
 import { useDispatch } from 'react-redux';
 import { addBookStart } from './booksActions';
 
 const AddBook = () => {
-  const { register, handleSubmit, setValue, errors } = useForm({
+  const { register, handleSubmit, errors } = useForm({
     defaultValues: { image: {} }
   });
   const [image, setImage] = useState({});

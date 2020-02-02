@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 // components
 import Loader from '../../components/Loader/Loader';
 // redux
@@ -19,13 +19,13 @@ const EditBook = () => {
 
   useEffect(() => {
     dispatch(getBookStart({ id }));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     setValue('title', book.title);
     setValue('description', book.description);
     setValue('price', book.price);
-  }, [book]);
+  }, [book, setValue]);
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;

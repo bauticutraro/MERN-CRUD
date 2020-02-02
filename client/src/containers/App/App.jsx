@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import GlobalStyle from '../../global-styles';
 // components
 import Navbar from '../../components/Navbar/Navbar';
-import SideBar from '../../components/Sidebar/Sidebar';
+// import SideBar from '../../components/Sidebar/Sidebar';
 // containers
 const Books = lazy(() => import('../Books/Books'));
 const Book = lazy(() => import('../Books/Book'));

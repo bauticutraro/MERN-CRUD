@@ -1,10 +1,8 @@
 import React, { useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { getBooksStart, deleteBookStart } from './booksActions';
+import { getBooksStart } from './booksActions';
 // styles
-import { Grid, CircularProgress } from '@material-ui/core';
 import BookItem from '../../components/BookItem/BookItem';
 import Loader from '../../components/Loader/Loader';
 
@@ -17,25 +15,21 @@ const Books = ({ history: { push } }) => {
     dispatch(getBooksStart());
   }, [dispatch]);
 
-  const handleChangeRoute = useCallback(route => push(route));
+  const handleChangeRoute = useCallback(route => push(route), [push]);
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
   return (
-    <Grid items xs={12}>
-      <Grid container justify='center' spacing={6}>
-        {list.map((book, i) => (
-          <Grid item>
-            <BookItem
-              key={book._id}
-              handleChangeRoute={handleChangeRoute}
-              {...book}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    </Grid>
+    <div>
+      {list.map((book, i) => (
+        <BookItem
+          key={book._id}
+          handleChangeRoute={handleChangeRoute}
+          {...book}
+        />
+      ))}
+    </div>
   );
 };
 
