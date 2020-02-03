@@ -1,13 +1,13 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
-module.exports = async (path = 'others', file) => {
-  let s3bucket = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY,
-    Bucket: process.env.AWS_BUCKET_NAME
-  });
+const s3bucket = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+  Bucket: process.env.AWS_BUCKET_NAME
+});
 
+module.exports.uploadFile = async (path = 'others', file) => {
   try {
     await s3bucket.headBucket();
 
@@ -24,5 +24,19 @@ module.exports = async (path = 'others', file) => {
   } catch (err) {
     console.log(err);
     return { success: false, error: err };
+  }
+};
+
+module.exports.removeFile = async (folder, fileName) => {
+  try {
+    await s3bucket.headBucket();
+    await s3bucket
+      .deleteObject({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: `${folder}/${fileName}`
+      })
+      .promise();
+  } catch (err) {
+    console.log(err);
   }
 };

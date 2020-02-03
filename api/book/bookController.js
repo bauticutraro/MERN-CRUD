@@ -1,5 +1,5 @@
 const BookModel = require('./bookModel');
-const aws = require('../../utils/aws');
+const { uploadFile, removeFile } = require('../../utils/aws');
 
 class BookController {
   async getBooks(_, res) {
@@ -29,7 +29,7 @@ class BookController {
 
   async createBook(req, res) {
     try {
-      const upload = await aws('books', req.file);
+      const upload = await uploadFile('books', req.file);
       let file;
 
       if (upload.success) file = upload.uri;
@@ -60,8 +60,13 @@ class BookController {
       book.price = price || book.price;
       book.description = description || book.description;
       if (req.file) {
-        const upload = await aws('books', req.file);
-        if (upload.success) book.file = upload.uri;
+        const fileName = book.file.split('/').slice(-1)[0];
+
+        if (fileName !== req.file.originalname) {
+          const upload = await uploadFile('books', req.file);
+          await removeFile('books', fileName);
+          if (upload.success) book.file = upload.uri;
+        }
       }
 
       await book.save();
