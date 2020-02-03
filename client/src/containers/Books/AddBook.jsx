@@ -40,6 +40,13 @@ const AddBook = () => {
         ref={register({ required: true })}
       />
       {errors.price && <p>Price required</p>}
+
+      <div>
+        {image.name && (
+          <img src={URL.createObjectURL(image)} width={250} height={250} />
+        )}
+      </div>
+
       <input type='file' name='image' onChange={handleImage} />
 
       <button type='submit'>Add</button>
