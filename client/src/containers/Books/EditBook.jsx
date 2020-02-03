@@ -7,6 +7,8 @@ import Loader from '../../components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBookStart, updateBookStart } from './booksActions';
 
+let mounted = false;
+
 const EditBook = () => {
   const { register, handleSubmit, setValue, errors } = useForm();
   const [image, setImage] = useState({});
@@ -16,8 +18,12 @@ const EditBook = () => {
 
   const { id } = useParams();
 
-  const onSubmit = body =>
+  // functions
+
+  const onSubmit = body => {
+    mounted = false;
     dispatch(updateBookStart({ id, body: { ...body, image } }));
+  };
 
   const handleChangeImage = ({ target }) => setImage(target.files[0]);
 
@@ -29,9 +35,10 @@ const EditBook = () => {
     setValue('title', book.title);
     setValue('description', book.description);
     setValue('price', book.price);
+    mounted = true;
   }, [book, setValue]);
 
-  if (loading) return <Loader />;
+  if (loading && mounted) return <Loader />;
   if (error) return <p>{error}</p>;
 
   return (
@@ -68,6 +75,9 @@ const EditBook = () => {
       />
 
       <input type='file' name='image' onChange={handleChangeImage} />
+
+      {loading && <p>Loading...</p>}
+      {!loading && error && <p>{error}</p>}
 
       <input type='submit' value='Save' />
     </form>

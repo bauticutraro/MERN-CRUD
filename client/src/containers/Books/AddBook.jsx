@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 // redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addBookStart } from './booksActions';
 
 const AddBook = () => {
@@ -11,6 +11,10 @@ const AddBook = () => {
   const [image, setImage] = useState({});
 
   const dispatch = useDispatch();
+
+  const { loading, error } = useSelector(({ books }) => books);
+
+  // functions
 
   const onSubmit = data => dispatch(addBookStart({ ...data, image }));
 
@@ -48,6 +52,9 @@ const AddBook = () => {
       </div>
 
       <input type='file' name='image' onChange={handleImage} />
+
+      {loading && <p>Loading...</p>}
+      {!loading && error && <p>{error}</p>}
 
       <button type='submit'>Add</button>
     </form>

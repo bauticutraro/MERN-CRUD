@@ -29,6 +29,13 @@ class BookController {
 
   async createBook(req, res) {
     try {
+      const { name } = req.body;
+
+      const existBook = await BookModel.find({ name });
+
+      if (existBook)
+        return res.status(400).send({ error: 'Book already exist' });
+
       const upload = await uploadFile('books', req.file);
       let file;
 
@@ -39,7 +46,7 @@ class BookController {
         file
       });
 
-      return res.status(200).json({ book, file });
+      return res.status(200).json({ book });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
