@@ -47,7 +47,12 @@ const AddBook = () => {
 
       <div>
         {image.name && (
-          <img src={URL.createObjectURL(image)} width={250} height={250} />
+          <img
+            src={URL.createObjectURL(image)}
+            width={250}
+            height={250}
+            alt=''
+          />
         )}
       </div>
 

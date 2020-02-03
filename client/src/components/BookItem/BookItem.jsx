@@ -23,6 +23,7 @@ const BookItem = ({ _id, title, price, description, file: image }) => {
           }
           width={150}
           height={170}
+          alt=''
         />
       </div>
       <span>{description}</span>

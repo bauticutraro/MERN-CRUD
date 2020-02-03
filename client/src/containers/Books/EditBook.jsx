@@ -72,6 +72,7 @@ const EditBook = () => {
         src={image.name ? URL.createObjectURL(image) : book.file}
         width={250}
         height={250}
+        alt=''
       />
 
       <input type='file' name='image' onChange={handleChangeImage} />
