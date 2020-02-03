@@ -34,9 +34,6 @@ const EditBook = () => {
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
-  console.log(image.name);
-  // console.log(URL.createObjectURL(image));
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input
