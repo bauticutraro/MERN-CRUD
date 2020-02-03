@@ -70,7 +70,7 @@ function* updateBook({ payload: { id, body } }) {
   try {
     yield services.updateBookService(id, body);
     yield put(push('/'));
-    yield getBooks();
+    // yield getBooks();
   } catch (err) {
     yield put(actions.updateBookFailure({ error: err.message }));
   }

@@ -11,4 +11,4 @@ export const addBookService = body => requestData(BOOK_URL, 'POST', body);
 export const deleteBookService = id => api(`${BOOK_URL}/${id}`, 'DELETE');
 
 export const updateBookService = (id, body) =>
-  api(`${BOOK_URL}/${id}`, 'PUT', body);
+  requestData(`${BOOK_URL}/${id}`, 'PUT', body);

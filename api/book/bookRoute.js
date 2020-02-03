@@ -24,7 +24,7 @@ router
   // @desc    Update book
   // @route   PUT /api/v1/books/:id
   // @access  Public
-  .put(bookController.updateBook)
+  .put(upload.single('image'), bookController.updateBook)
   // @desc    Delete book
   // @route   DELETE /api/v1/books/:id
   // @access  Public

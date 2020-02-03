@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 // components
@@ -9,13 +9,17 @@ import { getBookStart, updateBookStart } from './booksActions';
 
 const EditBook = () => {
   const { register, handleSubmit, setValue, errors } = useForm();
+  const [image, setImage] = useState({});
 
   const dispatch = useDispatch();
   const { book, loading, error } = useSelector(({ books }) => books);
 
   const { id } = useParams();
 
-  const onSubmit = body => dispatch(updateBookStart({ id, body }));
+  const onSubmit = body =>
+    dispatch(updateBookStart({ id, body: { ...body, image } }));
+
+  const handleChangeImage = ({ target }) => setImage(target.files[0]);
 
   useEffect(() => {
     dispatch(getBookStart({ id }));
@@ -29,6 +33,9 @@ const EditBook = () => {
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
+
+  console.log(image.name);
+  // console.log(URL.createObjectURL(image));
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,6 +63,14 @@ const EditBook = () => {
         ref={register({ required: true })}
       />
       {errors.price && <p>Price is required</p>}
+
+      <img
+        src={image.name ? URL.createObjectURL(image) : book.file}
+        width={50}
+        height={50}
+      />
+
+      <input type='file' name='image' onChange={handleChangeImage} />
 
       <input type='submit' value='Save' />
     </form>

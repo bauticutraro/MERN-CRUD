@@ -59,6 +59,10 @@ class BookController {
       book.title = title || book.title;
       book.price = price || book.price;
       book.description = description || book.description;
+      if (req.file) {
+        const upload = await aws('books', req.file);
+        if (upload.success) book.file = upload.uri;
+      }
 
       await book.save();
       return res.status(200).json({ book });

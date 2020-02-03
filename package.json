@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "bauticutraro",
   "scripts": {
-    "start": "cross-env NODE_ENV=development  node server.js",
+    "start": "cross-env NODE_ENV=development nodemon server.js",
     "server": "cross-env NODE_ENV=development nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
